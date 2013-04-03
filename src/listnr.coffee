@@ -19,7 +19,7 @@ class Context
     @_map[combo] or @_default
 
   map: (combo, callback) ->
-    @_map[combo] = => callback.call(@_listener)
+    @_map[combo] = => callback.apply(@_listener, arguments)
     this
 
   unmap: (combo) ->

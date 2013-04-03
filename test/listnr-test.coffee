@@ -43,7 +43,7 @@ buster.testCase 'Listnr',
       @listnr.map(combo, spy)
       triggerCombo(@el, combo)
 
-      assert.calledOnce(spy)
+      assert.calledOnceWith(spy, combo)
       assert.calledOn(spy, @listnr)
 
     'only triggers on match': ->

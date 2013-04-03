@@ -19,6 +19,7 @@ document.body.appendChild(div)
 listnr = new Listnr()
 
 setContext = (ctx) ->
+  listnr.activate(ctx)
   document
     .getElementById('action')
     .innerHTML = "Switching context to '#{ctx}'"
@@ -28,7 +29,6 @@ setContext = (ctx) ->
   document
     .getElementById('help')
     .innerHTML = JSON.stringify(listnr.help(), null, 2)
-  listnr.activate(ctx)
 
 matchingHandler = (combo) ->
   document

@@ -29,20 +29,20 @@ buster.testCase 'Listnr',
     listnr = new Listnr()
     assert(listnr instanceof Listnr)
 
-  '.add':
+  '.map':
 
     setUp: ->
       @el = createEl('div')
       @listnr = new Listnr(el: @el)
 
     'returns self': ->
-      assert.same(@listnr.add(), @listnr)
+      assert.same(@listnr.map(), @listnr)
 
     'does not call the handler': ->
       combo = 'a'
       spy = @spy()
 
-      @listnr.add(combo, spy)
+      @listnr.map(combo, spy)
 
       refute.called(spy)
 
@@ -50,26 +50,26 @@ buster.testCase 'Listnr',
       combo = 'a'
       spy = @spy()
 
-      @listnr.add(combo, spy)
+      @listnr.map(combo, spy)
       triggerCombo(@el, combo)
 
       assert.calledOnceWith(spy, combo)
       assert.calledOn(spy, @listnr)
 
-  '.remove':
+  '.unmap':
 
     setUp: ->
       @el = createEl('div')
       @combo = 'a'
       @keySpy = @spy()
       @listnr = new Listnr(el: @el)
-        .add(@combo, @keySpy)
+        .map(@combo, @keySpy)
 
     'returns self': ->
-      assert.same(@listnr.remove(), @listnr)
+      assert.same(@listnr.unmap(), @listnr)
 
     'removes listener': ->
-      @listnr.remove(@combo)
+      @listnr.unmap(@combo)
 
       triggerCombo(@el, @combo)
 

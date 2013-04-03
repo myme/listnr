@@ -11,6 +11,8 @@ div.innerHTML = """
     <dt>Action:</dt>
     <dd id="action"></dd>
   </dl>
+  <pre id="help">
+  </pre>
 """
 document.body.appendChild(div)
 
@@ -23,6 +25,9 @@ setContext = (ctx) ->
   document
     .getElementById('context')
     .innerHTML = ctx
+  document
+    .getElementById('help')
+    .innerHTML = JSON.stringify(listnr.help(), null, 2)
   listnr.activate(ctx)
 
 matchingHandler = (combo) ->
@@ -36,12 +41,12 @@ defaultHandler = (combo) ->
     .innerHTML = "No mapping for '#{combo}'"
 
 listnr
-  .map('a', matchingHandler)
-  .map('c', -> setContext('context'))
+  .map('a', 'Mapping for "a"', matchingHandler)
+  .map('c', 'Switch to menu context', -> setContext('menu'))
   .default(defaultHandler)
-  .addContext('context')
-  .map('b', matchingHandler)
-  .map('d', -> setContext('default'))
+  .addContext('menu')
+  .map('b', 'Mapping for "b"', matchingHandler)
+  .map('d', 'Switch to default context', -> setContext('default'))
   .default(defaultHandler)
 
 setContext('default')

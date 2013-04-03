@@ -4,7 +4,7 @@ addEvent = (el, type, handler) ->
 removeEvent = (el, type, handler) ->
   el.removeEventListener(type, handler)
 
-class Listnr
+class @Listnr
   constructor: (options={}) ->
     @_map = {}
     @el = options.el or document.body
@@ -18,5 +18,3 @@ class Listnr
   unmap: (combo) ->
     removeEvent(@el, 'keypress', @_map[combo])
     this
-
-this.Listnr = Listnr

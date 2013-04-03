@@ -16,7 +16,7 @@ class @Listnr
     handler() if handler
 
   map: (combo, callback) ->
-    @_map[combo] = => callback.call(this, combo)
+    @_map[combo] = => callback.call(this)
     this
 
   unmap: (combo) ->

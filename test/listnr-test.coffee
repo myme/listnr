@@ -72,3 +72,23 @@ buster.testCase 'Listnr',
       triggerCombo(@el, @combo)
 
       refute.called(@keySpy)
+
+  '.addContext':
+
+    setUp: ->
+      @el = createEl('div')
+      @listnr = new Listnr(el: @el)
+
+    '// adds a new context of mappings': ->
+      ctxHandler = @spy()
+      defaultHandler = @spy()
+
+      @listnr.map('a', defaultHandler)
+      ctx = @listnr.addContext('menu')
+      ctx.map('a', ctxHandler)
+      ctx.activate()
+
+      triggerCombo(@el, 'a')
+
+      assert.calledOnce(ctxHandler)
+      refute.called(defaultHandler)

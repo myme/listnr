@@ -83,10 +83,11 @@ buster.testCase 'Listnr',
       ctxHandler = @spy()
       defaultHandler = @spy()
 
-      @listnr.map('a', defaultHandler)
-      ctx = @listnr.addContext('menu')
-      ctx.map('a', ctxHandler)
-      ctx.activate()
+      @listnr
+        .map('a', defaultHandler)
+        .addContext('menu')
+        .map('a', ctxHandler)
+        .activate()
 
       triggerCombo(@el, 'a')
 

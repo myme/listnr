@@ -1,0 +1,32 @@
+{
+  "name": "listnr",
+  "version": "0.0.3",
+  "description": "Listnr - JavaScript Hotkey Manager",
+  "scripts": {
+    "start": "grunt --force start",
+    "test": "grunt test"
+  },
+  "repository": "",
+  "keywords": [
+    "hotkey",
+    "keyboard",
+    "keybindings"
+  ],
+  "author": {
+    "name": "Martin Øinæs Myrseth",
+    "email": "myrseth@gmail.com"
+  },
+  "license": "ISC",
+  "devDependencies": {
+    "buster": "~0.6.12",
+    "grunt": "~0.4.1",
+    "grunt-buster": "~0.1.2",
+    "grunt-cli": "~0.1.6",
+    "grunt-coffeelint": "0.0.6",
+    "grunt-contrib-coffee": "~0.6.4",
+    "grunt-contrib-jshint": "~0.3.0",
+    "grunt-contrib-uglify": "~0.2.0",
+    "grunt-contrib-watch": "~0.3.1",
+    "phantomjs": "~1.9.0-0"
+  }
+}

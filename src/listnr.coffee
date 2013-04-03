@@ -8,6 +8,9 @@ class Context
   constructor: (@_listener) ->
     @_map = {}
 
+  activate: ->
+    @_listener.activate(this)
+
   resolve: (combo) ->
     @_map[combo]
 
@@ -30,6 +33,9 @@ class @Listnr
     combo = String.fromCharCode(event.keyCode)
     handler = @_active.resolve(combo)
     handler() if handler
+
+  activate: (ctx) ->
+    @_active = ctx
 
   addContext: (id) ->
     @_contexts[id] = new Context(this)

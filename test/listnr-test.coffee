@@ -79,7 +79,7 @@ buster.testCase 'Listnr',
       @el = createEl('div')
       @listnr = new Listnr(el: @el)
 
-    '// adds a new context of mappings': ->
+    'adds a new context of mappings': ->
       ctxHandler = @spy()
       defaultHandler = @spy()
 

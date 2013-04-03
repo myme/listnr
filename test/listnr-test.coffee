@@ -122,6 +122,22 @@ buster.testCase 'Listnr',
 
       assert.calledOnce(spy)
 
+    '// allow activating multiple contexts': ->
+      defSpy = @spy()
+      ctxSpy = @spy()
+
+      @listnr
+        .map('a', defSpy)
+        .addContext('context')
+        .map('b', ctxSpy)
+        .activate('default', 'context')
+
+      triggerCombo(@el, 'a')
+      triggerCombo(@el, 'b')
+
+      assert.calledOnce(defSpy)
+      assert.calledOnce(ctxSpy)
+
   '.reset':
 
     setUp: ->

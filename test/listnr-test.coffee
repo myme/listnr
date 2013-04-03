@@ -137,3 +137,20 @@ buster.testCase 'Listnr',
 
       assert.calledOnce(defSpy)
       refute.called(ctxSpy)
+
+  '.default':
+
+    setUp: ->
+      @el = createEl('div')
+      @listnr = new Listnr(el: @el)
+
+    'returns self': ->
+      assert.same(@listnr.default(), @listnr)
+
+    'adds a default handler for all non-matching combos': ->
+      spy = @spy()
+
+      @listnr.default(spy)
+      triggerCombo(@el, 'a')
+
+      assert.calledOnceWith(spy, 'a')

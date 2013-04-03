@@ -6,13 +6,17 @@ removeEvent = (el, type, handler) ->
 
 class Context
   constructor: (@_listener) ->
+    @_default = null
     @_map = {}
 
   activate: ->
     @_listener.activate(this)
 
+  default: (callback) ->
+    @_default = callback
+
   resolve: (combo) ->
-    @_map[combo]
+    @_map[combo] or @_default
 
   map: (combo, callback) ->
     @_map[combo] = => callback.call(@_listener)
@@ -32,7 +36,7 @@ class @Listnr
   listener: (event) ->
     combo = String.fromCharCode(event.keyCode)
     handler = @_active.resolve(combo)
-    handler() if handler
+    handler(combo) if handler
 
   activate: (ctx) ->
     ctx = @_contexts[ctx] if typeof ctx is 'string'
@@ -41,6 +45,10 @@ class @Listnr
 
   addContext: (id) ->
     @_contexts[id] = new Context(this)
+
+  default: (callback) ->
+    @_active.default(callback)
+    this
 
   map: (combo, callback) ->
     @_active.map(combo, callback)

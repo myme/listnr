@@ -8,19 +8,9 @@ createEl = (tag) ->
   document.createElement(tag)
 
 triggerCombo = (el, combo) ->
-  keyCode = combo.charCodeAt(0)
-  event = document.createEvent('KeyboardEvent')
-  event.initKeyboardEvent(
-    'keypress',  #  event type
-     true,       #  can bubble
-     true,       #  cancelable
-     null,       #  UIEvent.view
-     false,      #  ctrl key
-     false,      #  alt key
-     false,      #  shift key
-     false,      #  meta key
-     keyCode,    #  key code
-     0)          #  char code
+  event = document.createEvent('Event')
+  event.initEvent('keypress', true, true)
+  event.keyCode = combo.charCodeAt(0)
   el.dispatchEvent(event)
 
 buster.testCase 'Listnr',
@@ -53,8 +43,16 @@ buster.testCase 'Listnr',
       @listnr.map(combo, spy)
       triggerCombo(@el, combo)
 
-      assert.calledOnceWith(spy, combo)
+      assert.calledOnce(spy)
       assert.calledOn(spy, @listnr)
+
+    'only triggers on match': ->
+      spy = @spy()
+
+      @listnr.map('a', spy)
+      triggerCombo(@el, 'b')
+
+      refute.called(spy)
 
   '.unmap':
 

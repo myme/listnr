@@ -8,13 +8,17 @@ class @Listnr
   constructor: (options={}) ->
     @_map = {}
     @el = options.el or document.body
+    addEvent(@el, 'keypress', => @listener.apply(this, arguments))
+
+  listener: (event) ->
+    combo = String.fromCharCode(event.keyCode)
+    handler = @_map[combo]
+    handler() if handler
 
   map: (combo, callback) ->
-    listener = @_map[combo] = =>
-      callback.call(this, combo)
-    addEvent(@el, 'keypress', listener)
+    @_map[combo] = => callback.call(this, combo)
     this
 
   unmap: (combo) ->
-    removeEvent(@el, 'keypress', @_map[combo])
+    delete @_map[combo]
     this

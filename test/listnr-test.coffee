@@ -112,3 +112,28 @@ buster.testCase 'Listnr',
       triggerCombo(@el, 'a')
 
       assert.calledOnce(spy)
+
+  '.reset':
+
+    setUp: ->
+      @el = createEl('div')
+      @listnr = new Listnr(el: @el)
+
+    'returns self': ->
+      assert.same(@listnr.reset(), @listnr)
+
+    'returns to the default context': ->
+      ctxSpy = @spy()
+      defSpy = @spy()
+
+      @listnr
+        .map('a', defSpy)
+        .addContext('context')
+        .map('a', ctxSpy)
+        .activate()
+
+      @listnr.reset()
+      triggerCombo(@el, 'a')
+
+      assert.calledOnce(defSpy)
+      refute.called(ctxSpy)

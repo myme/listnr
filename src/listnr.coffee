@@ -46,6 +46,10 @@ class @Listnr
     @_active.map(combo, callback)
     this
 
+  reset: ->
+    @_active = @_contexts['default']
+    this
+
   unmap: (combo) ->
     @_active.unmap(combo)
     this

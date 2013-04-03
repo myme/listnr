@@ -1,6 +1,7 @@
 module.exports = (grunt) ->
 
   sources = 'src/**/*.coffee'
+  examples = 'examples/**/*.coffee'
   tests = 'test/**/*.coffee'
 
   grunt.initConfig
@@ -10,6 +11,9 @@ module.exports = (grunt) ->
       dist:
         files:
           'dist/listnr.js': sources
+      examples:
+        files:
+          'dist/listnr-examples.js': examples
       tests:
         files:
           'dist/listnr-test.js': tests
@@ -18,6 +22,9 @@ module.exports = (grunt) ->
       assets: 'Gruntfile.coffee'
       dist: sources
       tests: tests
+
+    connect:
+      server: {}
 
     jshint:
       assets: 'buster.js'
@@ -33,6 +40,7 @@ module.exports = (grunt) ->
           'Gruntfile.coffee'
           'buster.js'
           sources
+          examples
           tests
         ]
         tasks: ['test']
@@ -40,12 +48,13 @@ module.exports = (grunt) ->
   grunt.loadNpmTasks('grunt-buster')
   grunt.loadNpmTasks('grunt-coffeelint')
   grunt.loadNpmTasks('grunt-contrib-coffee')
+  grunt.loadNpmTasks('grunt-contrib-connect')
   grunt.loadNpmTasks('grunt-contrib-jshint')
   grunt.loadNpmTasks('grunt-contrib-uglify')
   grunt.loadNpmTasks('grunt-contrib-watch')
 
   grunt.registerTask('lint', ['coffeelint', 'jshint'])
   grunt.registerTask('build', ['lint', 'coffee', 'uglify'])
-  grunt.registerTask('start', ['test', 'watch'])
+  grunt.registerTask('start', ['test', 'connect', 'watch'])
   grunt.registerTask('test', ['build', 'buster'])
   grunt.registerTask('default', ['test'])

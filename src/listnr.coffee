@@ -35,7 +35,9 @@ class @Listnr
     handler() if handler
 
   activate: (ctx) ->
+    ctx = @_contexts[ctx] if typeof ctx is 'string'
     @_active = ctx
+    this
 
   addContext: (id) ->
     @_contexts[id] = new Context(this)

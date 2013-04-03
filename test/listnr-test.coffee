@@ -92,3 +92,23 @@ buster.testCase 'Listnr',
 
       assert.calledOnce(ctxHandler)
       refute.called(defaultHandler)
+
+  '.activate':
+
+    setUp: ->
+      @el = createEl('div')
+      @listnr = new Listnr(el: @el)
+
+    'returns self': ->
+      assert.same(@listnr.activate(), @listnr)
+
+    'can activate context by name': ->
+      spy = @spy()
+      @listnr
+        .addContext('context')
+        .map('a', spy)
+
+      @listnr.activate('context')
+      triggerCombo(@el, 'a')
+
+      assert.calledOnce(spy)

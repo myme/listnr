@@ -54,6 +54,14 @@ buster.testCase 'Listnr',
 
       refute.called(spy)
 
+    'can add help text': ->
+      spy = @spy()
+
+      @listnr.map('a', 'Mapping description', spy)
+      triggerCombo(@el, 'a')
+
+      assert.calledOnceWith(spy, 'a')
+
   '.unmap':
 
     setUp: ->
@@ -155,3 +163,17 @@ buster.testCase 'Listnr',
       triggerCombo(@el, 'a')
 
       assert.calledOnceWith(spy, 'a')
+
+  '.help':
+
+    'returns help text': ->
+      help = new Listnr()
+        .map('a', 'Mapping for a', ->)
+        .map('b', ->)
+        .map('c', 'Mapping for c', ->)
+        .help()
+
+      assert.equals help,
+        'a': 'Mapping for a'
+        'b': null
+        'c': 'Mapping for c'

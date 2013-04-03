@@ -15,11 +15,21 @@ class Context
   default: (callback) ->
     @_default = callback
 
-  resolve: (combo) ->
-    @_map[combo] or @_default
+  help: ->
+    help = {}
+    for own key, [_, desc] of @_map
+      help[key] = desc
+    help
 
-  map: (combo, callback) ->
-    @_map[combo] = => callback.apply(@_listener, arguments)
+  resolve: (combo) ->
+    @_map[combo]?[0] or @_default
+
+  map: (combo, helpText, callback) ->
+    if not callback
+      callback = helpText
+      helpText = null
+    fn = => callback.apply(@_listener, arguments)
+    @_map[combo] = [fn, helpText]
     this
 
   unmap: (combo) ->
@@ -50,8 +60,11 @@ class @Listnr
     @_active.default(callback)
     this
 
-  map: (combo, callback) ->
-    @_active.map(combo, callback)
+  help: ->
+    @_active.help()
+
+  map: ->
+    @_active.map.apply(@_active, arguments)
     this
 
   reset: ->

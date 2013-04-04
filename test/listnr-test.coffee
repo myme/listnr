@@ -9,11 +9,19 @@ createEl = (tag) ->
   document.createElement(tag)
 
 
-triggerKeypress = (el, keyCode) ->
+triggerKeyEvent = (el, type, keyCode) ->
   event = document.createEvent('Event')
-  event.initEvent('keypress', true, true)
+  event.initEvent(type, true, true)
   event.keyCode = keyCode
   el.dispatchEvent(event)
+
+
+triggerKeydown = (el, keyCode) ->
+  triggerKeyEvent(el, 'keydown', keyCode)
+
+
+triggerKeypress = (el, keyCode) ->
+  triggerKeyEvent(el, 'keypress', keyCode)
 
 
 triggerCombo = (el, combo) ->
@@ -44,14 +52,22 @@ buster.testCase 'Listnr',
 
       refute.called(spy)
 
-    'creates a new listener which is triggered on keyboard events': ->
-      combo = 'a'
+    'creates listener triggered on keypress events': ->
       spy = @spy()
 
-      @listnr.map(combo, spy)
-      triggerCombo(@el, combo)
+      @listnr.map('a', spy)
+      triggerKeypress(@el, 'a'.charCodeAt(0))
 
-      assert.calledOnceWith(spy, combo)
+      assert.calledOnceWith(spy, 'a')
+      assert.calledOn(spy, @listnr)
+
+    'creates listener triggered on keydown events for special keys': ->
+      spy = @spy()
+
+      @listnr.map('up', spy)
+      triggerKeydown(@el, 38)
+
+      assert.calledOnceWith(spy, 'up')
       assert.calledOn(spy, @listnr)
 
     'only triggers on match': ->

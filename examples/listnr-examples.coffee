@@ -71,6 +71,7 @@ listnr
   .addContext('menu')
   .map('b', 'Mapping for "b"', matchingHandler)
   .map('d', 'Switch to default context', setContext('default'))
+  .map('up', 'Mapping for up key', matchingHandler)
   .default(defaultHandler)
 
 

@@ -113,7 +113,9 @@ class @Listnr
     @_always = null
     @_combo = []
     @el = options.el or document.body
-    addEvent(@el, 'keypress', => @_listener.apply(this, arguments))
+    fn = => @_listener.apply(this, arguments)
+    addEvent(@el, 'keydown', fn)
+    addEvent(@el, 'keypress', fn)
 
   _listener: (event) ->
     keyCode = event.keyCode

@@ -18,6 +18,7 @@ document.body.appendChild(div)
 
 listnr = new Listnr()
 
+
 setContext = (ctx) ->
   listnr.activate(ctx)
   document
@@ -30,15 +31,18 @@ setContext = (ctx) ->
     .getElementById('help')
     .innerHTML = JSON.stringify(listnr.help(), null, 2)
 
+
 matchingHandler = (combo) ->
   document
     .getElementById('action')
     .innerHTML = "Has mapping for '#{combo}'"
 
+
 defaultHandler = (combo) ->
   document
     .getElementById('action')
     .innerHTML = "No mapping for '#{combo}'"
+
 
 listnr
   .map('a', 'Mapping for "a"', matchingHandler)
@@ -49,5 +53,6 @@ listnr
   .map('b', 'Mapping for "b"', matchingHandler)
   .map('d', 'Switch to default context', -> setContext('default'))
   .default(defaultHandler)
+
 
 setContext('default')

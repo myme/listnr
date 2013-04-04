@@ -90,6 +90,17 @@ buster.testCase 'Listnr',
       assert.calledOnce(comboSpy)
       refute.called(singleSpy)
 
+    'can register multiple mappings for the same handler': ->
+      spy = @spy()
+
+      @listnr.map('a|b', spy)
+      triggerCombo(@el, 'a')
+      triggerCombo(@el, 'b')
+
+      assert.calledTwice(spy)
+      assert.calledWith(spy, 'a')
+      assert.calledWith(spy, 'b')
+
   '.unmap':
 
     setUp: ->
@@ -100,7 +111,7 @@ buster.testCase 'Listnr',
         .map(@combo, @keySpy)
 
     'returns self': ->
-      assert.same(@listnr.unmap(), @listnr)
+      assert.same(@listnr.unmap(@combo), @listnr)
 
     'removes listener': ->
       @listnr.unmap(@combo)
@@ -108,6 +119,30 @@ buster.testCase 'Listnr',
       triggerCombo(@el, @combo)
 
       refute.called(@keySpy)
+
+    'can remove single mapping of aliased listeners': ->
+      spy = @spy()
+
+      @listnr
+        .map('b|c', spy)
+        .unmap('b')
+
+      triggerCombo(@el, 'b')
+      triggerCombo(@el, 'c')
+
+      assert.calledOnceWith(spy, 'c')
+
+    'can remove multiple listeners': ->
+      spy = @spy()
+
+      @listnr
+        .map('b|c', spy)
+        .unmap('b|c')
+
+      triggerCombo(@el, 'b')
+      triggerCombo(@el, 'c')
+
+      refute.called(spy)
 
   '.addContext':
 
@@ -253,6 +288,15 @@ buster.testCase 'Listnr',
       assert.equals help,
         'a b': 'Mapping for "a b"'
         'c d e': 'Mapping for "c d e"'
+
+    'handles aliases nicely': ->
+      help = new Listnr()
+        .map('a|b', 'Mapping for foo', ->)
+        .help()
+
+      assert.equals help,
+        'a': 'Mapping for foo'
+        'b': 'Mapping for foo'
 
     'with combo argument returns help for mapping': ->
       help = new Listnr()

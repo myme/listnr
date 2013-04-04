@@ -36,6 +36,7 @@ class Context
     @_default = null
     @_map = {}
     @_comboBreaker = ' '
+    @_comboSplitter = '|'
 
   activate: ->
     @_listener.activate(this)
@@ -82,16 +83,17 @@ class Context
       true
 
   map: (combo, helpText, callback) ->
-    if not callback
-      callback = helpText
-      helpText = null
+    for combo in combo.split(@_comboSplitter)
+      if not callback
+        callback = helpText
+        helpText = null
 
-    fn = => callback.apply(@_listener, arguments)
-    obj = @_map
+      fn = => callback.apply(@_listener, arguments)
+      obj = @_map
 
-    [head..., tail] = @split(combo)
-    obj = obj[key] or= {} for key in head
-    obj[tail] = [fn, helpText]
+      [head..., tail] = @split(combo)
+      obj = obj[key] or= {} for key in head
+      obj[tail] = [fn, helpText]
 
     this
 
@@ -99,7 +101,8 @@ class Context
     combo.split(@_comboBreaker)
 
   unmap: (combo) ->
-    delete @_map[combo]
+    for combo in combo.split(@_comboSplitter)
+      delete @_map[combo]
     this
 
 

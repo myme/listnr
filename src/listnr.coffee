@@ -1,8 +1,10 @@
 addEvent = (el, type, handler) ->
   el.addEventListener(type, handler)
 
+
 removeEvent = (el, type, handler) ->
   el.removeEventListener(type, handler)
+
 
 class Context
   constructor: (@_listener) ->
@@ -35,6 +37,7 @@ class Context
   unmap: (combo) ->
     delete @_map[combo]
     this
+
 
 class @Listnr
   constructor: (options={}) ->

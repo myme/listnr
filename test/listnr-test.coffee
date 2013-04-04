@@ -7,11 +7,14 @@ refute = buster.refute
 createEl = (tag) ->
   document.createElement(tag)
 
-triggerCombo = (el, combo) ->
+triggerKeypress = (el, keyCode) ->
   event = document.createEvent('Event')
   event.initEvent('keypress', true, true)
-  event.keyCode = combo.charCodeAt(0)
+  event.keyCode = keyCode
   el.dispatchEvent(event)
+
+triggerCombo = (el, combo) ->
+  triggerKeypress(el, combo.charCodeAt(0))
 
 buster.testCase 'Listnr',
 
@@ -61,6 +64,14 @@ buster.testCase 'Listnr',
       triggerCombo(@el, 'a')
 
       assert.calledOnceWith(spy, 'a')
+
+    '"enter" maps to 13': ->
+      spy = @spy()
+
+      @listnr.map('enter', spy)
+      triggerKeypress(@el, 13)
+
+      assert.calledOnceWith(spy, 'enter')
 
   '.unmap':
 

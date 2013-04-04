@@ -72,7 +72,8 @@ class @Listnr
     addEvent(@el, 'keypress', => @listener.apply(this, arguments))
 
   listener: (event) ->
-    combo = String.fromCharCode(event.keyCode)
+    keyCode = event.keyCode
+    combo = keyCodeMap[keyCode] or String.fromCharCode(keyCode)
     handler = @_active.resolve(combo)
     handler(combo) if handler
 

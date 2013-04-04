@@ -204,6 +204,16 @@ buster.testCase 'Listnr',
 
       assert.calledOnceWith(spy, 'a')
 
+    'clears combo for default handler': ->
+      spy = @spy()
+
+      @listnr.default(spy)
+      triggerCombo(@el, 'a+b')
+
+      assert.calledTwice(spy)
+      assert.calledWith(spy, 'a')
+      assert.calledWith(spy, 'b')
+
   '.help':
 
     'returns help text': ->

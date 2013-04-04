@@ -115,9 +115,13 @@ class @Listnr
     handler = @_active.resolve(@_combo)
 
     if not handler
-      @_combo = []
+      @_clearCombo()
     else if handler instanceof Function
       handler(@_active.join(@_combo))
+      @_clearCombo()
+
+  _clearCombo: ->
+    @_combo = []
 
   activate: (ctx) ->
     ctx = @_contexts[ctx] if typeof ctx is 'string'

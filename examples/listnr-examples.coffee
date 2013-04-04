@@ -13,6 +13,10 @@ setHTML = (el, html) ->
   el.innerHTML = html
 
 
+always = (combo) ->
+  setHTML('combo', combo)
+
+
 setContext = (ctx) -> (combo) ->
   updateHelp(combo)
   listnr.activate(ctx)
@@ -41,7 +45,7 @@ updateHelp = (combo) ->
 
 
 matchingHandler = (combo) ->
-  setHTML('action', "Has mapping for '#{combo}'")
+  setHTML('action', "Map handler for '#{combo}'")
   updateHelp(combo)
 
 
@@ -58,6 +62,7 @@ listnr._listener = (event) ->
 
 
 listnr
+  .always(always)
   .map('a', 'Mapping for "a"', matchingHandler)
   .map('b c', 'Mapping for "b c"', matchingHandler)
   .map('e|f', 'Mapping for foo', matchingHandler)

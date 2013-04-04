@@ -3,25 +3,6 @@ Listnr = @Listnr
 createEl = (tag) ->
   document.createElement(tag)
 
-div = createEl('div')
-div.innerHTML = """
-  <h3>Current action</h3>
-  <dl class="dl-horizontal">
-    <dt>Context:</dt>
-    <dd id="context"></dd>
-    <dt>Action:</dt>
-    <dd id="action"></dd>
-    <dt>Help text:</dt>
-    <dd id="help-text">NA</dd>
-    <dt>Key Code:</dt>
-    <dd id="key-code">NA</dd>
-  </dl>
-  <h3>Context help text</h3>
-  <dl id="help" class="dl-horizontal"></dl>
-"""
-document
-  .getElementsByClassName('container')[0]
-  .appendChild(div)
 
 listnr = new Listnr()
 

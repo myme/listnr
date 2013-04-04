@@ -4,8 +4,10 @@ buster = @buster
 assert = buster.assert
 refute = buster.refute
 
+
 createEl = (tag) ->
   document.createElement(tag)
+
 
 triggerKeypress = (el, keyCode) ->
   event = document.createEvent('Event')
@@ -13,9 +15,11 @@ triggerKeypress = (el, keyCode) ->
   event.keyCode = keyCode
   el.dispatchEvent(event)
 
+
 triggerCombo = (el, combo) ->
   for key in combo.split('+')
     triggerKeypress(el, key.charCodeAt(0))
+
 
 buster.testCase 'Listnr',
 

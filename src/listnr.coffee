@@ -43,11 +43,22 @@ class Context
   default: (callback) ->
     @_default = callback
 
-  help: ->
+  _help: (map, path=[]) ->
     help = {}
-    for own key, [_, desc] of @_map
-      help[key] = desc
+
+    for own key, value of map
+      _path = path.concat(key)
+      if value instanceof Array
+        [_, desc] = value
+        help[@join(_path)] = desc
+      else
+        for own _key, _value of @_help(value, _path)
+          help[_key] = _value
+
     help
+
+  help: ->
+    @_help(@_map)
 
   join: (combo) ->
     combo.join(@_comboBreaker)

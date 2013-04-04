@@ -229,3 +229,13 @@ buster.testCase 'Listnr',
       assert.equals help,
         'b': null
         'c': 'Mapping for c'
+
+    'handles combos nicely': ->
+      help = new Listnr()
+        .map('a+b', 'Mapping for a+b', ->)
+        .map('c+d+e', 'Mapping for c+d+e', ->)
+        .help()
+
+      assert.equals help,
+        'a+b': 'Mapping for a+b'
+        'c+d+e': 'Mapping for c+d+e'

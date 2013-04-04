@@ -42,7 +42,7 @@ defaultHandler = (combo) ->
 
 listnr
   .map('a', 'Mapping for "a"', matchingHandler)
-  .map('b+c', 'Mapping for "b+c"', matchingHandler)
+  .map('b c', 'Mapping for "b c"', matchingHandler)
   .map('c', 'Switch to menu context', -> setContext('menu'))
   .default(defaultHandler)
   .addContext('menu')

@@ -35,7 +35,7 @@ class Context
   constructor: (@_listener) ->
     @_default = null
     @_map = {}
-    @_comboBreaker = '+'
+    @_comboBreaker = ' '
 
   activate: ->
     @_listener.activate(this)

@@ -17,7 +17,7 @@ triggerKeypress = (el, keyCode) ->
 
 
 triggerCombo = (el, combo) ->
-  for key in combo.split('+')
+  for key in combo.split(' ')
     triggerKeypress(el, key.charCodeAt(0))
 
 
@@ -83,9 +83,9 @@ buster.testCase 'Listnr',
       singleSpy = @spy()
 
       @listnr
-        .map('a+b', comboSpy)
+        .map('a b', comboSpy)
         .map('b', singleSpy)
-      triggerCombo(@el, 'a+b')
+      triggerCombo(@el, 'a b')
 
       assert.calledOnce(comboSpy)
       refute.called(singleSpy)
@@ -212,7 +212,7 @@ buster.testCase 'Listnr',
       spy = @spy()
 
       @listnr.default(spy)
-      triggerCombo(@el, 'a+b')
+      triggerCombo(@el, 'a b')
 
       assert.calledTwice(spy)
       assert.calledWith(spy, 'a')
@@ -246,26 +246,26 @@ buster.testCase 'Listnr',
 
     'handles combos nicely': ->
       help = new Listnr()
-        .map('a+b', 'Mapping for a+b', ->)
-        .map('c+d+e', 'Mapping for c+d+e', ->)
+        .map('a b', 'Mapping for "a b"', ->)
+        .map('c d e', 'Mapping for "c d e"', ->)
         .help()
 
       assert.equals help,
-        'a+b': 'Mapping for a+b'
-        'c+d+e': 'Mapping for c+d+e'
+        'a b': 'Mapping for "a b"'
+        'c d e': 'Mapping for "c d e"'
 
     'with combo argument returns help for mapping': ->
       help = new Listnr()
-        .map('a+b', 'Mapping for a+b', ->)
-        .map('b', 'Mapping for b', ->)
-        .help('a+b')
+        .map('a b', 'Mapping for "a b"', ->)
+        .map('b', 'Mapping for "b"', ->)
+        .help('a b')
 
-      assert.equals(help, 'Mapping for a+b')
+      assert.equals(help, 'Mapping for "a b"')
 
     'with combo argument returns undefined for missing mapping': ->
       help = new Listnr()
-        .map('a+b', 'Mapping for a+b', ->)
+        .map('a b', 'Mapping for "a b"', ->)
         .map('b', 'Mapping for b', ->)
-        .help('c+d')
+        .help('c d')
 
       assert.equals(help, undefined)

@@ -57,8 +57,12 @@ class Context
 
     help
 
-  help: ->
-    @_help(@_map)
+  help: (combo) ->
+    help = @_help(@_map)
+    if not combo
+      help
+    else
+      help[combo]
 
   join: (combo) ->
     combo.join(@_comboBreaker)
@@ -135,8 +139,8 @@ class @Listnr
     @_active.default(callback)
     this
 
-  help: ->
-    @_active.help()
+  help: (combo) ->
+    @_active.help(combo)
 
   map: ->
     @_active.map.apply(@_active, arguments)

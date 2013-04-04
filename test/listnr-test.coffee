@@ -249,3 +249,19 @@ buster.testCase 'Listnr',
       assert.equals help,
         'a+b': 'Mapping for a+b'
         'c+d+e': 'Mapping for c+d+e'
+
+    'with combo argument returns help for mapping': ->
+      help = new Listnr()
+        .map('a+b', 'Mapping for a+b', ->)
+        .map('b', 'Mapping for b', ->)
+        .help('a+b')
+
+      assert.equals(help, 'Mapping for a+b')
+
+    'with combo argument returns undefined for missing mapping': ->
+      help = new Listnr()
+        .map('a+b', 'Mapping for a+b', ->)
+        .map('b', 'Mapping for b', ->)
+        .help('c+d')
+
+      assert.equals(help, undefined)

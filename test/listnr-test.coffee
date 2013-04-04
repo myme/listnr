@@ -226,6 +226,57 @@ buster.testCase 'Listnr',
       assert.calledOnce(defSpy)
       refute.called(ctxSpy)
 
+  '.always':
+
+    setUp: ->
+      @el = createEl('div')
+      @listnr = new Listnr(el: @el)
+
+    'returns self': ->
+      assert.same(@listnr.always(), @listnr)
+
+    'adds a handler executed for all combinations': ->
+      always = @spy()
+      spy = @spy()
+
+      @listnr
+        .always(always)
+        .map('a', spy)
+      triggerCombo(@el, 'a')
+
+      assert.calledOnceWith(spy, 'a')
+      assert.calledOnceWith(always, 'a')
+
+    'triggers even with no handlers': ->
+      spy = @spy()
+
+      @listnr.always(spy)
+      triggerCombo(@el, 'a')
+
+      assert.calledOnceWith(spy, 'a')
+
+    'triggers individually when no combo': ->
+      spy = @spy()
+
+      @listnr.always(spy)
+      triggerCombo(@el, 'a b')
+
+      assert.calledTwice(spy)
+      assert.calledWith(spy, 'a')
+      assert.calledWith(spy, 'b')
+
+    'triggers once for each key in a combo': ->
+      spy = @spy()
+
+      @listnr
+        .map('a b', ->)
+        .always(spy)
+      triggerCombo(@el, 'a b')
+
+      assert.calledTwice(spy)
+      assert.calledWith(spy, 'a')
+      assert.calledWith(spy, 'a b')
+
   '.default':
 
     setUp: ->

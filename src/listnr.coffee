@@ -110,6 +110,7 @@ class @Listnr
   constructor: (options={}) ->
     @_contexts = default: new Context(this)
     @_active = @_contexts['default']
+    @_always = null
     @_combo = []
     @el = options.el or document.body
     addEvent(@el, 'keypress', => @_listener.apply(this, arguments))
@@ -119,12 +120,16 @@ class @Listnr
     key = keyCodeMap[keyCode] or String.fromCharCode(keyCode)
 
     @_combo.push(key)
+    always = @_always
+    combo = @_active.join(@_combo)
     handler = @_active.resolve(@_combo)
+
+    always(combo) if always instanceof Function
 
     if not handler
       @_clearCombo()
     else if handler instanceof Function
-      handler(@_active.join(@_combo))
+      handler(combo)
       @_clearCombo()
 
   _clearCombo: ->
@@ -137,6 +142,10 @@ class @Listnr
 
   addContext: (id) ->
     @_contexts[id] = new Context(this)
+
+  always: (callback) ->
+    @_always = callback
+    this
 
   default: (callback) ->
     @_active.default(callback)

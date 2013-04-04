@@ -85,11 +85,14 @@ class Context
     fn = => callback.apply(@_listener, arguments)
     obj = @_map
 
-    [head..., tail] = combo.split(@_comboBreaker)
+    [head..., tail] = @split(combo)
     obj = obj[key] or= {} for key in head
     obj[tail] = [fn, helpText]
 
     this
+
+  split: (combo) ->
+    combo.split(@_comboBreaker)
 
   unmap: (combo) ->
     delete @_map[combo]

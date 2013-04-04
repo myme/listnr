@@ -3,6 +3,7 @@
 <head>
   <title>Listnr examples</title>
   <link rel="stylesheet" href="/components/bootstrap/docs/assets/css/bootstrap.css">
+  <link rel="stylesheet" href="/components/bootstrap/docs/assets/css/bootstrap-responsive.css">
 </head>
 <body>
   <div class="container">
@@ -10,20 +11,24 @@
       <h1>Listnr examples</h1>
     </div>
     <h3>Current action</h3>
-    <dl class="dl-horizontal">
-      <dt>Context</dt>
-      <dd id="context"></dd>
-      <dt>Combo</dt>
-      <dd id="combo">NA</dd>
-      <dt>Action</dt>
-      <dd id="action">NA</dd>
-      <dt>Help text</dt>
-      <dd id="help-text">NA</dd>
-      <dt>Key Code</dt>
-      <dd id="key-code">NA</dd>
-    </dl>
+    <div class="row">
+      <dl class="dl-horizontal">
+        <dt>Context</dt>
+        <dd id="context"></dd>
+        <dt>Combo</dt>
+        <dd id="combo">NA</dd>
+        <dt>Action</dt>
+        <dd id="action">NA</dd>
+        <dt>Help text</dt>
+        <dd id="help-text">NA</dd>
+        <dt>Key Code</dt>
+        <dd id="key-code">NA</dd>
+      </dl>
+    </div>
     <h3>Context help text</h3>
-    <dl id="help" class="dl-horizontal"></dl>
+    <div class="row">
+      <dl id="help" class="dl-horizontal"></dl>
+    </div>
   </div>
   <script src="/dist/listnr.js"></script>
   <script src="/dist/listnr-examples.js"></script>

@@ -14,7 +14,8 @@ triggerKeypress = (el, keyCode) ->
   el.dispatchEvent(event)
 
 triggerCombo = (el, combo) ->
-  triggerKeypress(el, combo.charCodeAt(0))
+  for key in combo.split('+')
+    triggerKeypress(el, key.charCodeAt(0))
 
 buster.testCase 'Listnr',
 
@@ -29,7 +30,7 @@ buster.testCase 'Listnr',
       @listnr = new Listnr(el: @el)
 
     'returns self': ->
-      assert.same(@listnr.map(), @listnr)
+      assert.same(@listnr.map('a', ->), @listnr)
 
     'does not call the handler': ->
       combo = 'a'
@@ -72,6 +73,18 @@ buster.testCase 'Listnr',
       triggerKeypress(@el, 13)
 
       assert.calledOnceWith(spy, 'enter')
+
+    'can register combos': ->
+      comboSpy = @spy()
+      singleSpy = @spy()
+
+      @listnr
+        .map('a+b', comboSpy)
+        .map('b', singleSpy)
+      triggerCombo(@el, 'a+b')
+
+      assert.calledOnce(comboSpy)
+      refute.called(singleSpy)
 
   '.unmap':
 

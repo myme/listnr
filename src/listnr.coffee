@@ -35,6 +35,7 @@ class Context
   constructor: (@_listener) ->
     @_default = null
     @_map = {}
+    @_comboBreaker = '+'
 
   activate: ->
     @_listener.activate(this)
@@ -48,15 +49,35 @@ class Context
       help[key] = desc
     help
 
+  join: (combo) ->
+    combo.join(@_comboBreaker)
+
   resolve: (combo) ->
-    @_map[combo]?[0] or @_default
+    obj = @_map
+
+    for key in combo
+      break if not obj
+      obj = obj[key]
+
+    if not obj
+      @_default
+    else if obj instanceof Array
+      obj[0]
+    else
+      true
 
   map: (combo, helpText, callback) ->
     if not callback
       callback = helpText
       helpText = null
+
     fn = => callback.apply(@_listener, arguments)
-    @_map[combo] = [fn, helpText]
+    obj = @_map
+
+    [head..., tail] = combo.split(@_comboBreaker)
+    obj = obj[key] or= {} for key in head
+    obj[tail] = [fn, helpText]
+
     this
 
   unmap: (combo) ->
@@ -68,14 +89,21 @@ class @Listnr
   constructor: (options={}) ->
     @_contexts = default: new Context(this)
     @_active = @_contexts['default']
+    @_combo = []
     @el = options.el or document.body
     addEvent(@el, 'keypress', => @_listener.apply(this, arguments))
 
   _listener: (event) ->
     keyCode = event.keyCode
-    combo = keyCodeMap[keyCode] or String.fromCharCode(keyCode)
-    handler = @_active.resolve(combo)
-    handler(combo) if handler
+    key = keyCodeMap[keyCode] or String.fromCharCode(keyCode)
+
+    @_combo.push(key)
+    handler = @_active.resolve(@_combo)
+
+    if not handler
+      @_combo = []
+    else if handler instanceof Function
+      handler(@_active.join(@_combo))
 
   activate: (ctx) ->
     ctx = @_contexts[ctx] if typeof ctx is 'string'

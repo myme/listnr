@@ -5,7 +5,8 @@ createEl = (tag) ->
 
 div = createEl('div')
 div.innerHTML = """
-  <dl>
+  <h3>Current action</h3>
+  <dl class="dl-horizontal">
     <dt>Context:</dt>
     <dd id="context"></dd>
     <dt>Action:</dt>
@@ -15,26 +16,42 @@ div.innerHTML = """
     <dt>Key Code:</dt>
     <dd id="key-code">NA</dd>
   </dl>
-  <pre id="help">
-  </pre>
+  <h3>Context help text</h3>
+  <dl id="help" class="dl-horizontal"></dl>
 """
-document.body.appendChild(div)
+document
+  .getElementsByClassName('container')[0]
+  .appendChild(div)
 
 listnr = new Listnr()
 
 
-setHTML = (id, html) ->
-  document
-    .getElementById(id)
-    .innerHTML = html
+setHTML = (el, html) ->
+  if typeof el is 'string'
+    el = document.getElementById(el)
+  el.innerHTML = html
 
 
 setContext = (ctx) -> (combo) ->
   updateHelp(combo)
   listnr.activate(ctx)
+
   setHTML('action', "Switching context to '#{ctx}'")
   setHTML('context', ctx)
-  setHTML('help', JSON.stringify(listnr.help(), null, 2))
+
+  do ->
+    dl = document.getElementById('help')
+    dl.innerHTML = ''
+
+    for own key, value of listnr.help()
+      dt = createEl('dt')
+      dd = createEl('dd')
+
+      setHTML(dt, key)
+      setHTML(dd, value)
+
+      dl.appendChild(dt)
+      dl.appendChild(dd)
 
 
 updateHelp = (combo) ->

@@ -69,9 +69,9 @@ class @Listnr
     @_contexts = default: new Context(this)
     @_active = @_contexts['default']
     @el = options.el or document.body
-    addEvent(@el, 'keypress', => @listener.apply(this, arguments))
+    addEvent(@el, 'keypress', => @_listener.apply(this, arguments))
 
-  listener: (event) ->
+  _listener: (event) ->
     keyCode = event.keyCode
     combo = keyCodeMap[keyCode] or String.fromCharCode(keyCode)
     handler = @_active.resolve(combo)
